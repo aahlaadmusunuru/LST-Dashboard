@@ -1,40 +1,20 @@
-from flask import Flask, jsonify, request
-from flask_cors import CORS
-import json
-import os
-import glob
-import ee
-import numpy as np
-from datetime import datetime
-from functools import lru_cache
-import random
-
-app = Flask(__name__)
-CORS(app)
-
-# Initialize Earth Engine
+# Replace the Earth Engine initialization section with:
 EE_INITIALIZED = False
 try:
-    # Try to use service account credentials from environment variable
-    if os.getenv('GEE_SERVICE_ACCOUNT_KEY'):
-        try:
-            service_account_key = json.loads(os.getenv('GEE_SERVICE_ACCOUNT_KEY'))
-            credentials = ee.ServiceAccountCredentials(
-                email=service_account_key['client_email'],
-                key_data=service_account_key['private_key']
-            )
-            ee.Initialize(credentials)
-            EE_INITIALIZED = True
-            print("✓ Earth Engine initialized with service account")
-        except Exception as e:
-            print(f"✗ Service account initialization failed: {e}")
-            # Try default authentication as fallback
-            try:
-                ee.Initialize()
-                EE_INITIALIZED = True
-                print("✓ Earth Engine initialized with default auth")
-            except:
-                EE_INITIALIZED = False
+    if os.getenv('GEE_SERVICE_ACCOUNT') and os.getenv('GEE_PRIVATE_KEY'):
+        credentials = ee.ServiceAccountCredentials(
+            email=os.getenv('GEE_SERVICE_ACCOUNT'),
+            key_data=os.getenv('GEE_PRIVATE_KEY')
+        )
+        ee.Initialize(credentials)
+        EE_INITIALIZED = True
+        print("✓ Earth Engine initialized with service account")
+    else:
+        ee.Initialize()
+        EE_INITIALIZED = True
+except Exception as e:
+    print(f"Earth Engine init failed: {e}")
+    EE_INITIALIZED = False
     else:
         # Try default authentication
         ee.Initialize()
@@ -409,3 +389,4 @@ if __name__ == '__main__':
         port=port,
         debug=False  # Set to False for production
     )
+
