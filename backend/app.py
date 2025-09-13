@@ -1,27 +1,51 @@
-# Replace the Earth Engine initialization section with:
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+import json
+import os
+import glob
+import ee
+import numpy as np
+from datetime import datetime
+from functools import lru_cache
+import random
+
+app = Flask(__name__)
+CORS(app)
+
+# Initialize Earth Engine
 EE_INITIALIZED = False
 try:
+    # Check if we have service account credentials in environment
     if os.getenv('GEE_SERVICE_ACCOUNT') and os.getenv('GEE_PRIVATE_KEY'):
-        credentials = ee.ServiceAccountCredentials(
-            email=os.getenv('GEE_SERVICE_ACCOUNT'),
-            key_data=os.getenv('GEE_PRIVATE_KEY')
-        )
-        ee.Initialize(credentials)
-        EE_INITIALIZED = True
-        print("✓ Earth Engine initialized with service account")
-    else:
-        ee.Initialize()
-        EE_INITIALIZED = True
-except Exception as e:
-    print(f"Earth Engine init failed: {e}")
-    EE_INITIALIZED = False
+        try:
+            credentials = ee.ServiceAccountCredentials(
+                email=os.getenv('GEE_SERVICE_ACCOUNT'),
+                key_data=os.getenv('GEE_PRIVATE_KEY')
+            )
+            ee.Initialize(credentials)
+            EE_INITIALIZED = True
+            print("✓ Earth Engine initialized with service account")
+        except Exception as e:
+            print(f"✗ Service account initialization failed: {e}")
+            # Try default authentication as fallback
+            try:
+                ee.Initialize()
+                EE_INITIALIZED = True
+                print("✓ Earth Engine initialized with default auth")
+            except Exception as e2:
+                print(f"✗ Default auth also failed: {e2}")
+                EE_INITIALIZED = False
     else:
         # Try default authentication
-        ee.Initialize()
-        EE_INITIALIZED = True
-        print("✓ Earth Engine initialized with default auth")
+        try:
+            ee.Initialize()
+            EE_INITIALIZED = True
+            print("✓ Earth Engine initialized with default auth")
+        except Exception as e:
+            print(f"✗ Default initialization failed: {e}")
+            EE_INITIALIZED = False
 except Exception as e:
-    print(f"✗ Earth Engine initialization failed: {e}")
+    print(f"✗ Earth Engine initialization failed completely: {e}")
     print("  Using pre-computed data and estimates only")
     EE_INITIALIZED = False
 
@@ -198,6 +222,8 @@ def home():
     return jsonify({
         'name': 'LST Temperature Analysis API',
         'status': 'running',
+        'earth_engine': 'initialized' if EE_INITIALIZED else 'not available',
+        'months_loaded': len(PRECOMPUTED_DATA),
         'endpoints': [
             '/api/lst-layer',
             '/api/point',
@@ -374,7 +400,7 @@ if __name__ == '__main__':
     print(f"✓ Loaded {len(PRECOMPUTED_DATA)} months of data")
     print(f"{'✓' if EE_INITIALIZED else '✗'} Earth Engine: {'Ready' if EE_INITIALIZED else 'Not initialized'}")
     print("✓ Using DAYTIME temperatures only (LST_Day_1km)")
-    print("✓ Calculating monthly average from all days in month")
+    print("✓ Using MODIS/061/MOD11A2 dataset")
     
     if not EE_INITIALIZED:
         print("\nRunning with pre-computed data only")
@@ -389,4 +415,3 @@ if __name__ == '__main__':
         port=port,
         debug=False  # Set to False for production
     )
-
