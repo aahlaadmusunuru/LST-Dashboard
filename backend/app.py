@@ -15,23 +15,48 @@ CORS(app)
 # Initialize Earth Engine
 EE_INITIALIZED = False
 try:
-    ee.Initialize()
-    EE_INITIALIZED = True
-    print("✓ Earth Engine initialized successfully")
+    # Try to use service account credentials from environment variable
+    if os.getenv('GEE_SERVICE_ACCOUNT_KEY'):
+        try:
+            service_account_key = json.loads(os.getenv('GEE_SERVICE_ACCOUNT_KEY'))
+            credentials = ee.ServiceAccountCredentials(
+                email=service_account_key['client_email'],
+                key_data=service_account_key['private_key']
+            )
+            ee.Initialize(credentials)
+            EE_INITIALIZED = True
+            print("✓ Earth Engine initialized with service account")
+        except Exception as e:
+            print(f"✗ Service account initialization failed: {e}")
+            # Try default authentication as fallback
+            try:
+                ee.Initialize()
+                EE_INITIALIZED = True
+                print("✓ Earth Engine initialized with default auth")
+            except:
+                EE_INITIALIZED = False
+    else:
+        # Try default authentication
+        ee.Initialize()
+        EE_INITIALIZED = True
+        print("✓ Earth Engine initialized with default auth")
 except Exception as e:
     print(f"✗ Earth Engine initialization failed: {e}")
-    print("  Run 'earthengine authenticate' in terminal")
-    print("  Using estimated values for now")
+    print("  Using pre-computed data and estimates only")
+    EE_INITIALIZED = False
 
 DATA_DIR = 'precomputed_data'
 PRECOMPUTED_DATA = {}
 
 # Load JSON files
-for json_file in glob.glob(f'{DATA_DIR}/2024-*.json'):
-    with open(json_file, 'r') as f:
-        data = json.load(f)
-        PRECOMPUTED_DATA[data['value']] = data
-        print(f"Loaded {data['value']}")
+try:
+    for json_file in glob.glob(f'{DATA_DIR}/2024-*.json'):
+        with open(json_file, 'r') as f:
+            data = json.load(f)
+            PRECOMPUTED_DATA[data['value']] = data
+            print(f"Loaded {data['value']}")
+except Exception as e:
+    print(f"Warning: Could not load precomputed data: {e}")
 
 # Cache for Earth Engine images
 @lru_cache(maxsize=12)
@@ -186,6 +211,22 @@ def estimate_pixel_value(lat, lng, statistics):
     
     # Clamp to realistic range
     return max(min_val, min(max_val, temperature))
+
+@app.route('/')
+def home():
+    """Root endpoint"""
+    return jsonify({
+        'name': 'LST Temperature Analysis API',
+        'status': 'running',
+        'endpoints': [
+            '/api/lst-layer',
+            '/api/point',
+            '/api/time-series',
+            '/api/pixel-stats',
+            '/api/months',
+            '/health'
+        ]
+    })
 
 @app.route('/api/lst-layer')
 def get_lst_layer():
@@ -344,6 +385,9 @@ def health():
     })
 
 if __name__ == '__main__':
+    # Get port from environment variable (Render sets this)
+    port = int(os.environ.get('PORT', 5000))
+    
     print("\n" + "="*60)
     print("LST PIXEL VALUE SERVER - DAYTIME TEMPERATURES ONLY")
     print("="*60)
@@ -353,16 +397,15 @@ if __name__ == '__main__':
     print("✓ Calculating monthly average from all days in month")
     
     if not EE_INITIALIZED:
-        print("\nTo enable Earth Engine (for accurate pixel values):")
-        print("1. Run: earthengine authenticate")
-        print("2. Restart this server")
-        print("\nCurrently using estimated values based on location")
+        print("\nRunning with pre-computed data only")
+        print("Earth Engine features disabled")
     
-    print("\nEndpoints:")
-    print("  GET /api/point?month=2024-08&lat=42.5&lng=-75.5")
-    print("  GET /api/time-series?lat=42.5&lng=-75.5")
-    print("  GET /api/pixel-stats?lat=42.5&lng=-75.5")
-    print("  GET /health")
+    print(f"\nServer starting on port {port}")
     print("="*60 + "\n")
     
-    app.run(debug=True, port=5000, host='0.0.0.0')
+    # Run with production settings for Render
+    app.run(
+        host='0.0.0.0',
+        port=port,
+        debug=False  # Set to False for production
+    )
