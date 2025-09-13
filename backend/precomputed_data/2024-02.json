@@ -1,8 +1,8 @@
 {
   "label": "February 2024",
   "value": "2024-02",
-  "tile_url": "https://earthengine.googleapis.com/v1/projects/gee-assignment-471518/maps/0dd6e7042b55bc61e9a7ae797787d676-b56213ed58bc406c956b78c882d4e64c/tiles/{z}/{x}/{y}",
-  "map_id": "projects/gee-assignment-471518/maps/0dd6e7042b55bc61e9a7ae797787d676-b56213ed58bc406c956b78c882d4e64c",
+  "tile_url": "https://earthengine.googleapis.com/v1/projects/gee-assignment-471518/maps/0dd6e7042b55bc61e9a7ae797787d676-d4eeda2b0d37648a11ebf6752b7b1259/tiles/{z}/{x}/{y}",
+  "map_id": "projects/gee-assignment-471518/maps/0dd6e7042b55bc61e9a7ae797787d676-d4eeda2b0d37648a11ebf6752b7b1259",
   "token": "",
   "statistics": {
     "mean": 1.47,
@@ -88,5 +88,5 @@
     }
   ],
   "image_count": 4,
-  "computed_at": "2025-09-11T21:02:15.682277"
+  "computed_at": "2025-09-13T22:13:59.512574"
 }
