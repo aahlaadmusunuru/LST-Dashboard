@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 
 // Constants
-const API_URL = 'http://localhost:5000';
+const API_URL = 'https://lst-dashboard-5.onrender.com';
 const INITIAL_MONTH = '2024-08';
 const NY_CENTER = [42.9543, -75.5262];
 const INITIAL_ZOOM = 7;
@@ -1585,5 +1585,6 @@ styleSheet.textContent = `
   }
 `;
 document.head.appendChild(styleSheet);
+
 
 export default App;
