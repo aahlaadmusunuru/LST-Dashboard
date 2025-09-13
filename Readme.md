@@ -349,9 +349,6 @@ We welcome contributions! Please follow these steps:
 - 💼 GitHub: [https://github.com/aahlaadmusunuru](https://github.com/aahlaadmusunuru)
 - 🐛 Issues: [GitHub Issues](https://github.com/aahlaadmusunuru/LST-Dashboard/issues)
 
-## 📝 License
-
-MIT License - See LICENSE file for details
 
 ## 🙏 Acknowledgments
 
@@ -373,5 +370,6 @@ MIT License - See LICENSE file for details
 ---
 
 Developed with ❤️ by [Aahlaad Musunuru](https://github.com/aahlaadmusunuru)
+
 
 </div>
