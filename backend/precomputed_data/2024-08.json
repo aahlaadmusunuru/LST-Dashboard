@@ -1,0 +1,92 @@
+{
+  "label": "August 2024",
+  "value": "2024-08",
+  "tile_url": "https://earthengine.googleapis.com/v1/projects/gee-assignment-471518/maps/55687c573c07082f540e301e8b1f80f7-7c6fc433ca289e01aae2622cfbf65bed/tiles/{z}/{x}/{y}",
+  "map_id": "projects/gee-assignment-471518/maps/55687c573c07082f540e301e8b1f80f7-7c6fc433ca289e01aae2622cfbf65bed",
+  "token": "",
+  "statistics": {
+    "mean": 22.4,
+    "min": 16.63,
+    "max": 34.27,
+    "stdDev": 2.03
+  },
+  "grid_points": [
+    {
+      "lat": 42,
+      "lng": -79,
+      "temp": 20.91
+    },
+    {
+      "lat": 42,
+      "lng": -78,
+      "temp": 20.86
+    },
+    {
+      "lat": 42,
+      "lng": -77,
+      "temp": 22.25
+    },
+    {
+      "lat": 42,
+      "lng": -76,
+      "temp": 22.69
+    },
+    {
+      "lat": 42,
+      "lng": -75,
+      "temp": 21.18
+    },
+    {
+      "lat": 42,
+      "lng": -74,
+      "temp": 24.29
+    },
+    {
+      "lat": 43,
+      "lng": -79,
+      "temp": 23.37
+    },
+    {
+      "lat": 43,
+      "lng": -78,
+      "temp": 24.88
+    },
+    {
+      "lat": 43,
+      "lng": -77,
+      "temp": 24.57
+    },
+    {
+      "lat": 43,
+      "lng": -76,
+      "temp": 24.98
+    },
+    {
+      "lat": 43,
+      "lng": -75,
+      "temp": 23.64
+    },
+    {
+      "lat": 43,
+      "lng": -74,
+      "temp": 22.01
+    },
+    {
+      "lat": 44,
+      "lng": -76,
+      "temp": 23.24
+    },
+    {
+      "lat": 44,
+      "lng": -75,
+      "temp": 20.31
+    },
+    {
+      "lat": 44,
+      "lng": -74,
+      "temp": 19.85
+    }
+  ],
+  "image_count": 4,
+  "computed_at": "2025-09-11T21:07:42.885818"
+}
