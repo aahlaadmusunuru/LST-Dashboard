@@ -313,15 +313,6 @@ npm run build
 4. **Calculate statistics** → Process temperature metrics
 5. **Return JSON** → Send data to frontend
 
-## 🤝 Contributing
-
-We welcome contributions! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/NewFeature`)
-3. Commit changes (`git commit -m 'Add NewFeature'`)
-4. Push to branch (`git push origin feature/NewFeature`)
-5. Open a Pull Request
 
 ## 📈 Performance Metrics
 
@@ -373,3 +364,4 @@ Developed with ❤️ by [Aahlaad Musunuru](https://github.com/aahlaadmusunuru)
 
 
 </div>
+
