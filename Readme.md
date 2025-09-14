@@ -360,8 +360,9 @@ npm run build
 
 ---
 
-Developed with ❤️ by [Aahlaad Musunuru](https://github.com/aahlaadmusunuru)
+Developed with  by [Aahlaad Musunuru](https://github.com/aahlaadmusunuru)
 
 
 </div>
+
 
